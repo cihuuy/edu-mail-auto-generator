@@ -5,21 +5,19 @@ import random
 import sys
 import colorama
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 from random import randint
 from __constants.const import *
 from __banner.myBanner import bannerTop
 from __colors__.colors import *
 
 ######## This script is only for educational purpose ########
-######## use it on your own RISK ########
+######## use it at your own RISK ########
 ######## I'm not responsible for any loss or damage ########
 ######## caused to you using this script ########
 
@@ -43,7 +41,7 @@ def start_bot(start_url, email, college, collegeID):
 
     streetAddress = ex_split[0]
 
-    if(re.compile(',').search(ex_split[1]) != None):
+    if re.compile(',').search(ex_split[1]) != None:
         ex_split1 = ex_split[1].split(', ')
         cityAddress = ex_split1[0]
         ex_split2 = ex_split1[1].split(' ')
@@ -67,18 +65,16 @@ def start_bot(start_url, email, college, collegeID):
     try:
         # For Chrome
         if typex == 'chrome':
-            driver = webdriver.Chrome(executable_path=r'./webdriver/chromedriver')
+            driver = webdriver.Chrome()
         # For Firefox
         elif typex == 'firefox':
-            # cap = DesiredCapabilities().FIREFOX
-            # cap['marionette'] = True
-            driver = webdriver.Firefox(executable_path=r'./webdriver/geckodriver')
+            driver = webdriver.Firefox()
         elif typex == '':
             print(fr + 'Error - Run setup.py first')
             exit()
     except Exception as e:
         time.sleep(0.4)
-        print('\n' + fr + 'Error - '+ str(e))
+        print('\n' + fr + 'Error - ' + str(e))
         exit()
 
     driver.maximize_window()
@@ -86,39 +82,49 @@ def start_bot(start_url, email, college, collegeID):
 
     time.sleep(1)
 
-    driver.find_element_by_xpath('//*[@id="portletContent_u16l1n18"]/div/div[2]/div/a[2]').click()
+    try:
+        driver.find_element_by_xpath('//*[@id="portletContent_u16l1n18"]/div/div[2]/div/a[2]').click()
+    except:
+        print("Could not find the element. Please check the XPath.")
 
     time.sleep(1)
 
-    WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.ID, "accountFormSubmit"))
-    ).click()
+    try:
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "accountFormSubmit"))
+        ).click()
+    except:
+        print("Could not find the element. Please check the ID.")
 
     print(fc + sd + '[' + fm + sb + '*' + fc + sd + '] ' + fy + 'Account Progress - 1/3', end='')
 
-    WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.ID, "inputFirstName"))
-    ).send_keys(firstName)
+    try:
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "inputFirstName"))
+        ).send_keys(firstName)
+    except:
+        print("Could not find the element. Please check the ID.")
 
     time.sleep(0.7)
 
-    WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.ID, "inputMiddleName"))
-    ).send_keys(middleName)
-    
-    time.sleep(0.7)
-
-    WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.ID, "inputLastName"))
-    ).send_keys(LastName)
+    try:
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "inputMiddleName"))
+        ).send_keys(middleName)
+    except:
+        print("Could not find the element. Please check the ID.")
 
     time.sleep(0.7)
 
-    driver.find_element_by_xpath('//*[@id="hasOtherNameNo"]').click()
-
-    driver.find_element_by_xpath('//*[@id="hasPreferredNameNo"]').click()
+    try:
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.ID, "inputLastName"))
+        ).send_keys(LastName)
+    except:
+        print("Could not find the element. Please check the ID.")
 
     time.sleep(0.7)
+
 
     WebDriverWait(driver, 60).until(
         EC.element_to_be_clickable(
