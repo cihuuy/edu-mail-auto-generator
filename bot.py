@@ -63,12 +63,16 @@ def start_bot(start_url, email, college, collegeID):
     typex = fp.read()
 
     try:
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        
         # For Chrome
         if typex == 'chrome':
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome(options=chrome_options)
         # For Firefox
         elif typex == 'firefox':
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(options=chrome_options)
         elif typex == '':
             print(fr + 'Error - Run setup.py first')
             exit()
@@ -124,6 +128,7 @@ def start_bot(start_url, email, college, collegeID):
         print("Could not find the element. Please check the ID.")
 
     time.sleep(0.7)
+
 
 
     WebDriverWait(driver, 60).until(
